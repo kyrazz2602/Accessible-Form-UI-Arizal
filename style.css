@@ -1,0 +1,420 @@
+/* --- 1. DEFINISI PROPERTY (Untuk Animasi Angka/Gradient) --- */
+/* Fitur modern ini memungkinkan kita menganimasikan variabel CSS */
+@property --percent {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/* --- VARIABLES & RESET --- */
+:root {
+    --bg-dark: #09090b;
+    --glass-surface: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    
+    --accent-cyan: #06b6d4;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    
+    --error: #ef4444;
+    --success: #10b981;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* --- BACKGROUND BLOBS (ENHANCED ANIMATION) --- */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    z-index: -1;
+    /* Animasi gabungan float dan rotate */
+    animation: moveAndPulse 15s infinite alternate ease-in-out;
+}
+
+.blob-purple { 
+    width: 500px; height: 500px; 
+    background: radial-gradient(circle, var(--accent-purple), transparent 70%);
+    top: -100px; left: -100px; 
+}
+.blob-cyan { 
+    width: 400px; height: 400px; 
+    background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+    bottom: -50px; right: -50px; 
+    animation-delay: -5s; 
+    animation-duration: 18s;
+}
+.blob-pink { 
+    width: 300px; height: 300px; 
+    background: radial-gradient(circle, var(--accent-pink), transparent 70%);
+    bottom: 20%; left: 20%; 
+    opacity: 0.4;
+    animation-delay: -10s; 
+}
+
+@keyframes moveAndPulse {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { opacity: 0.8; }
+    100% { transform: translate(60px, -40px) scale(1.1) rotate(20deg); }
+}
+
+/* --- MAIN CARD CONTAINER --- */
+.card-container {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+    width: 950px;
+    max-width: 95%;
+    padding: 3.5rem;
+    
+    background: var(--glass-surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 32px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    
+    /* Animasi Masuk Kartu */
+    opacity: 0;
+    animation: cardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Efek Kilatan Cahaya (Sheen) saat load */
+.card-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -150%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-20deg);
+    animation: sheen 1.5s ease-out 1s forwards; /* Delay 1 detik */
+    pointer-events: none;
+}
+
+/* --- LEFT COLUMN: FORM (STAGGERED ANIMATION) --- */
+.form-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    opacity: 0;
+    animation: slideUpFade 0.6s ease-out 0.2s forwards;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    /* Animasi berurutan untuk setiap input */
+    animation: slideUpFade 0.6s ease-out forwards;
+}
+
+/* Delay otomatis untuk input group ke-1 sampai ke-4 */
+.input-group:nth-child(2) { animation-delay: 0.3s; }
+.input-group:nth-child(3) { animation-delay: 0.4s; }
+.input-group:nth-child(4) { animation-delay: 0.5s; }
+.input-group:nth-child(5) { animation-delay: 0.6s; }
+
+/* Input Styles & Animations */
+.input-group input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Animasi Label Floating */
+.input-group label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 5px;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+/* States: Focus & Filled */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 0, 0, 0.4);
+    /* Efek Pulse saat aktif */
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1), 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: 0;
+    left: 0.8rem;
+    transform: translateY(-50%) scale(0.85);
+    color: var(--accent-cyan);
+    background-color: var(--bg-dark);
+}
+
+/* Error styling */
+.input-group input.input-error {
+    border-color: var(--error);
+    animation: shake 0.4s ease-in-out;
+}
+.input-group input.input-error + label { color: var(--error); }
+.error-msg {
+    color: var(--error);
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: flex; align-items: center; gap: 5px;
+    opacity: 0; animation: slideInLeft 0.4s ease-out 0.8s forwards;
+}
+.error-msg::before { content: '⚠'; }
+
+/* Eye Button Hover Animation */
+.eye-btn {
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.eye-btn:hover { 
+    color: var(--text-primary); 
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Submit Button & Hover Effects */
+.submit-btn {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s;
+    opacity: 0;
+    animation: slideUpFade 0.6s ease-out 0.7s forwards;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5);
+}
+
+/* Gelombang cahaya saat hover */
+.submit-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: 0.5s;
+}
+.submit-btn:hover::after { left: 100%; }
+
+/* --- RIGHT COLUMN: STATUS --- */
+.status-section {
+    display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s, border-color 0.3s;
+    
+    opacity: 0;
+    animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.progress-panel { animation-delay: 0.4s; }
+.checklist-box { animation-delay: 0.6s; }
+
+.glass-panel:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--glass-highlight);
+    transform: translateY(-4px);
+}
+
+/* PROGRESS CHART ANIMATION (The Magic Part) */
+.circular-chart {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    /* Menggunakan variabel animasi --percent */
+    background: conic-gradient(
+        var(--accent-cyan) 0% var(--percent),
+        var(--accent-purple) var(--percent) var(--percent),
+        rgba(255, 255, 255, 0.05) var(--percent) 100%
+    );
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+    
+    /* Menjalankan animasi mengisi lingkaran */
+    animation: fillChart 2s ease-out 0.5s forwards; 
+}
+
+.inner-circle {
+    width: 120px; height: 120px;
+    background: #0e1014;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 1;
+}
+
+.percentage {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Animasi pop-up teks */
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2s forwards;
+    opacity: 0; transform: scale(0.5);
+}
+
+.label-tiny {
+    font-size: 0.75rem; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 1px;
+}
+
+/* Checklist Animation */
+.checklist-box ul { list-style: none; width: 100%; }
+
+.checklist-box li {
+    padding: 0.8rem 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex; align-items: center; gap: 10px;
+    opacity: 0;
+    /* Staggered animation based on custom variable --i from HTML */
+    animation: slideInLeft 0.5s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.15s + 0.8s);
+}
+
+.checklist-box li:last-child { border-bottom: none; }
+
+.checklist-box li::before {
+    content: '';
+    width: 18px; height: 18px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.checklist-box li.completed {
+    color: var(--text-primary);
+    text-decoration: line-through;
+    text-decoration-color: var(--success);
+}
+
+.checklist-box li.completed::before {
+    border-color: var(--success);
+    background-color: var(--success);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    animation: checkPop 0.3s ease-in-out forwards; /* Efek "pop" saat dicentang */
+}
+
+/* --- KEYFRAMES DEFINITIONS --- */
+
+/* Animasi Progress Bar Mengisi */
+@keyframes fillChart {
+    from { --percent: 0%; }
+    to { --percent: 65%; }
+}
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popIn {
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes checkPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes sheen {
+    100% { left: 150%; }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .card-container { grid-template-columns: 1fr; padding: 2rem; width: 100%; gap: 2rem; }
+    .status-section { flex-direction: row; }
+    .glass-panel { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .status-section { flex-direction: column; }
+    .card-container { padding: 1.5rem; }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dark Glassmorphism</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="blob blob-purple"></div>
+<div class="blob blob-cyan"></div>
+<div class="blob blob-pink"></div>
+
+<div class="card-container">
+    
+    <div class="form-section">
+        
+        <h2 class="form-title">Edit Profile</h2>
+
+        <div class="input-group">
+            <input type="text" id="fullname" placeholder=" " required>
+            <label for="fullname">Full Name</label>
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder=" " value="john@doe.com" class="input-error" required>
+            <label for="email">Email Address</label>
+            <span class="error-msg">Email is already taken</span>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+            <button type="button" class="eye-btn" aria-label="Toggle password visibility">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="confirm-password" placeholder=" " required>
+            <label for="confirm-password">Confirm Password</label>
+            <button type="button" class="eye-btn" aria-label="Toggle password visibility">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+        </div>
+
+        <button class="submit-btn">
+            <span>Update Profile</span>
+            <div class="btn-glow"></div>
+        </button>
+    </div>
+
+    <div class="status-section">
+        
+        <div class="glass-panel progress-panel">
+            <div class="circular-chart" style="--percent: 65%;">
+                <div class="inner-circle">
+                    <span class="percentage">65%</span>
+                    <span class="label-tiny">Completed</span>
+                </div>
+            </div>
+            <h3>Profile Status</h3>
+        </div>
+
+        <div class="glass-panel checklist-box">
+            <ul>
+                <li class="completed" style="--i: 1">Create Account</li>
+                <li class="completed" style="--i: 2">Update Roadmap</li>
+                <li class="completed" style="--i: 3">Setup Public Profile</li>
+                <li style="--i: 4">Complete first project</li>
+                <li style="--i: 5">Invite your Friends</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
