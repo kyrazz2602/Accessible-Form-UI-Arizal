@@ -1,7 +1,8 @@
 # Accessible Form UI - Dark Glassmorphism Edition
 
-![Project Preview](Project_image.png)
-*(Note: Replace `Project_image.png` with the actual path to your screenshot if distinct)*
+![Project Preview](Project-image.png)
+
+---
 
 ## 🚀 About The Project
 
