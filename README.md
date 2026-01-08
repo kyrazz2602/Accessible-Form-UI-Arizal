@@ -25,7 +25,7 @@ The unique aspect of this project is that **all animations**, including the circ
 * **Staggered Animations:** Form elements and checklist items appear sequentially using `animation-delay`.
 * **Responsive Grid:** Adapts seamlessly from a dual-column desktop layout to a single-column mobile view.
 
-### ♿ Accessibility (A11y)
+### ♿ Accessibility
 * **Semantic HTML:** Proper use of `<label>`, `<fieldset>`, and `<form>` tags.
 * **Focus Management:** Clear, high-contrast focus indicators for keyboard navigation.
 * **Screen Reader Friendly:** Usage of `aria-label`, `aria-live`, and `role` attributes where necessary.
